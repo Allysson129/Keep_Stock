@@ -4,8 +4,6 @@ USE keep_stock;
 DROP DATABASE keep_stock;
  
 -- Para Workbench (Maria DB)
-
--- DESATUALIZADO: TUDO
  
 -- Tabela fornecedores
 CREATE TABLE fornecedores (

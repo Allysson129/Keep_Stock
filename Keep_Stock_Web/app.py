@@ -456,7 +456,6 @@ def relatorios():
 # -- Pedidos e Pedido_Itens: pedidos.html
 # -- Movimentações, Lotes, Entradas e Saídas: movimentacoes.html
 # -- Áreas, Áreas_Controladas, Sensores, Temperaturas_Controladas: areas.html
-# -- Devoluçãoes, Descartes e Inspeção_Estoque: conformidades.html
 # -- Relatórios: relatorios.html
 # -- Permissões, Notificações, Informações de usuário, Sensores, Alertas: configuracoes.html
 
@@ -1139,6 +1138,7 @@ def alterar_senha():
         usuario.update()
 
         # Mantém a senha do Supabase Auth sincronizada com a do banco
+
         try:
             if session.get("access_token"):
                 supabase.auth.set_session(session["access_token"], session["refresh_token"])

@@ -69,12 +69,12 @@
                             <h6 class="card-text mb-3">Temperatura máxima: {{ area.temperatura_max or 'N/A' }}°C</h6>
                         </div>
                         <div class="card-body p-2 pt-0" id="botoes_card">
-                        <button class="btn btn-primary btn-sm" type="button" style="width: 120px; height: 30px; background-color: #148577; border: none;">
+                        <button class="btn btn-primary btn-sm" type="button" style="width: 140px; height: 30px; background-color: #148577; border: none;">
                             Visualizar
                         </button>
                         <button
                             onclick='abrirModalEditarArea("{{ area.id_area }}", "{{ area.nome }}", "{{ area.descricao }}", "{{ area.area_rua }}", "{{ area.area_codigo }}", "{{ area.distancia_entre_prat }}", "{{ area.temperatura_max }}", "{{ area.temperatura_min }}")'
-                            class="btn btn-primary btn-sm" type="button" style="width: 120px; height: 30px; background-color: #148577; border: none;">
+                            class="btn btn-primary btn-sm" type="button" style="width: 140px; height: 30px; background-color: #148577; border: none;">
                             Editar
                         </button>
                     </div>

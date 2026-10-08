@@ -18,6 +18,8 @@ CREATE TABLE public.areas_estoque (
   distancia_entre_prat character varying,
   temperatura_max integer,
   temperatura_min integer,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
   CONSTRAINT areas_estoque_pkey PRIMARY KEY (id_area)
 );
 CREATE TABLE public.produtos (
@@ -33,6 +35,8 @@ CREATE TABLE public.produtos (
   valor_unitario_custo numeric,
   quantidade_atual integer,
   imagem_url character varying,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
   CONSTRAINT produtos_pkey PRIMARY KEY (id_produto)
 );
 CREATE TABLE public.fornecedores (
@@ -43,6 +47,8 @@ CREATE TABLE public.fornecedores (
   email character varying,
   cep character varying,
   imagem_url text,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
   CONSTRAINT fornecedores_pkey PRIMARY KEY (id_fornecedor)
 );
 CREATE TABLE public.clientes (
@@ -53,6 +59,8 @@ CREATE TABLE public.clientes (
   email character varying,
   codigo_postal character varying,
   imagem_url text,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
   CONSTRAINT clientes_pkey PRIMARY KEY (id_cliente)
 );
 CREATE TABLE public.descarte_motivos (
@@ -115,6 +123,8 @@ CREATE TABLE public.pedidos (
   data_pedido date DEFAULT now(),
   status_pedido character varying,
   data_prevista date,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
   CONSTRAINT pedidos_pkey PRIMARY KEY (id_pedido),
   CONSTRAINT pedidos_id_cliente_fkey FOREIGN KEY (id_cliente) REFERENCES public.clientes(id_cliente)
 );
@@ -257,4 +267,15 @@ CREATE TABLE public.auditoria (
   data_hora timestamp with time zone DEFAULT now(),
   CONSTRAINT auditoria_pkey PRIMARY KEY (id_log),
   CONSTRAINT logs_sistema_id_usuario_fkey FOREIGN KEY (id_usuario) REFERENCES public.usuarios(id_usuario)
+);
+CREATE TABLE public.leituras (
+  id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  device_id character varying NOT NULL,
+  sensor character varying NOT NULL,
+  temperatura double precision,
+  umidade double precision,
+  distancia double precision,
+  rfid_uid character varying,
+  timestamp timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT leituras_pkey PRIMARY KEY (id)
 );

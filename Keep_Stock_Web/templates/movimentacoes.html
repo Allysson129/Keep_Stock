@@ -33,7 +33,6 @@
     </nav>
 </header>
 
-
 <div id="hero_produtos">
     <div id="titulo_produtos">
         <h5> Estoque </h5> <img src="../static/Icons/Verdes/seta_direita.svg" alt="Seta para direita" id="seta_direita">
@@ -42,21 +41,28 @@
 </div>
 
 <main class="container-fluid px-4">
-    <div class="grid-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px;">
-        <section>
-            <h3 style="color: #148577; margin-bottom: 20px; border-bottom: 3px solid #148577; padding-bottom: 10px;">
-                Entradas no Estoque
-            </h3>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                {% if entradas %}
-                {% for entrada in entradas %}
-                <div class="card shadow-sm" style="border-left: 5px solid #28a745;">
-                    <div class="card-body p-3">
-                        <h5 class="card-title mb-2">{{ produtos_map.get(entrada.id_produto, 'Produto #' ~ entrada.id_produto) }}</h5>
-                        <p class="card-text mb-1"><strong>Quantidade:</strong> <span
-                                style="color: #28a745; font-weight: bold; font-size: 1.2rem;">+{{ entrada.quantidade }}</span></p>
-                        <p class="card-text mb-3"><strong>Data:</strong> {{ entrada.data_entrada }}</p>
-                        <div style="display: flex; gap: 10px;">
+    <section class="lista_movimentacoes" id="view_lista_entradas">
+        <div class="lista-container">
+            <div class="section-title">Entradas</div>
+            {% if entradas %}
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr></tr>
+                        <th style="color: black;">ID</th>
+                        <th style="color: black;">Produto</th>
+                        <th style="color: black;">Quantidade</th>
+                        <th style="color: black;">Data</th>
+                        <th style="color: black;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entrada in entradas %}
+                    <tr class="linha-produto">
+                        <td>{{ entrada.id_entrada }}</td>
+                        <td><strong>{{ entrada.produto or ('Produto #' ~ entrada.id_produto) }}</strong></td>
+                        <td class="text-success fw-semibold">+{{ entrada.quantidade }} unidades</td>
+                        <td>{{ entrada.data_entrada }}</td>
+                        <td>
                             <button
                                 onclick='abrirModalEditarEntrada("{{ entrada.id_entrada }}", "{{ entrada.id_produto }}", "{{ entrada.quantidade }}", "{{ entrada.data_entrada }}")'
                                 class="btn btn-primary btn-sm" type="button"
@@ -67,34 +73,45 @@
                                 class="btn btn-danger btn-sm" type="button" style="flex: 1;">
                                 Excluir
                             </button>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-                {% else %}
-                <div class="alert alert-info">{% if termo %}Nenhuma entrada encontrada para "{{ termo }}".{% else %}Nenhuma entrada cadastrada.{% endif %}</div>
-                {% endif %}
-            </div>
-        </section>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="alert alert-info">{% if termo %}Nenhuma entrada encontrada para "{{ termo }}".{% else %}Nenhuma entrada cadastrada.{% endif %}</div>
+            {% endif %}
+        </div>
+    </section>
 
-        <section>
-            <h3 style="color: #dc3545; margin-bottom: 20px; border-bottom: 3px solid #dc3545; padding-bottom: 10px;">
-                Saídas do Estoque
-            </h3>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                {% if saidas %}
-                {% for saida in saidas %}
-                <div class="card shadow-sm" style="border-left: 5px solid #dc3545;">
-                    <div class="card-body p-3">
-                        <h5 class="card-title mb-2">{{ produtos_map.get(saida.id_produto, 'Produto #' ~ saida.id_produto) }}</h5>
-                        <p class="card-text mb-1"><strong>Quantidade:</strong> <span
-                                style="color: #dc3545; font-weight: bold; font-size: 1.2rem;">-{{ saida.quantidade }}</span></p>
-                        <p class="card-text mb-1"><strong>Tipo:</strong> {{ saida.tipo_saida or 'N/A' }}</p>
-                        <p class="card-text mb-1"><strong>Cliente:</strong> {{ clientes_map.get(saida.id_cliente, 'N/A') }}</p>
-                        <p class="card-text mb-3"><strong>Data:</strong> {{ saida.data_saida }}</p>
-                        <div style="display: flex; gap: 10px;">
+    <section class="lista_movimentacoes" id="view_lista_saidas">
+        <div class="lista-container">
+            <div class="section-title">Saídas</div>
+            {% if saidas %}
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th style="color: black;">ID</th>
+                        <th style="color: black;">Produto</th>
+                        <th style="color: black;">Tipo</th>
+                        <th style="color: black;">Quantidade</th>
+                        <th style="color: black;">Cliente</th>
+                        <th style="color: black;">Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for saida in saidas %}
+                    <tr class="linha-produto">
+                        <td>{{ saida.id_saida }}</td>
+                        <td><strong>{{ saida.produto or ('Produto #' ~ saida.id_produto) }}</strong></td>
+                        <td>{{ saida.tipo_saida or 'Venda' }}</td>
+                        <td class="text-danger fw-semibold">-{{ saida.quantidade }} unidades</td>
+                        <td>{{ saida.cliente or 'Nenhum' }}</td>
+                        <td>{{ saida.data_saida }}</td>
+                        <td>
                             <button
-                                onclick='abrirModalEditarSaida("{{ saida.id_saida }}", "{{ saida.id_produto }}", "{{ saida.quantidade }}", "{{ saida.tipo_saida or '' }}", "{{ saida.id_cliente if saida.id_cliente is not none else '' }}", "{{ saida.data_saida }}")'
+                                onclick='abrirModalEditarSaida("{{ saida.id_saida }}", "{{ saida.id_produto }}", "{{ saida.quantidade }}", "{{ saida.tipo_saida }}", "{{ saida.id_cliente }}", "{{ saida.data_saida }}")'
                                 class="btn btn-primary btn-sm" type="button"
                                 style="background-color: #148577; border: none; flex: 1;">
                                 Editar
@@ -103,16 +120,16 @@
                                 class="btn btn-danger btn-sm" type="button" style="flex: 1;">
                                 Excluir
                             </button>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-                {% else %}
-                <div class="alert alert-info">{% if termo %}Nenhuma saída encontrada para "{{ termo }}".{% else %}Nenhuma saída cadastrada.{% endif %}</div>
-                {% endif %}
-            </div>
-        </section>
-    </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="alert alert-info">{% if termo %}Nenhuma saída encontrada para "{{ termo }}".{% else %}Nenhuma saída cadastrada.{% endif %}</div>
+            {% endif %}
+        </div>
+    </section>
 </main>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEntrada">
